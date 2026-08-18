@@ -1,0 +1,128 @@
+# ==============================
+# Python
+# ==============================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ==============================
+# IDE
+# ==============================
+
+.vscode/
+.idea/
+
+# PyCharm
+*.iml
+
+# ==============================
+# Environment / secrets
+# ==============================
+
+.env
+.env.*
+!.env.example
+
+# ==============================
+# Build / distribution
+# ==============================
+
+build/
+dist/
+*.egg-info/
+
+# ==============================
+# PyInstaller
+# ==============================
+
+*.spec
+# Якщо .spec потрібно зберігати в Git — видали цей рядок
+
+# ==============================
+# Testing / coverage
+# ==============================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# ==============================
+# Type checkers / linters
+# ==============================
+
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# ==============================
+# Jupyter
+# ==============================
+
+.ipynb_checkpoints/
+
+# ==============================
+# Logs
+# ==============================
+
+*.log
+logs/
+
+# ==============================
+# OS
+# ==============================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# ==============================
+# Application generated files
+# ==============================
+
+# Тимчасові файли
+tmp/
+temp/
+.cache/
+
+# Згенеровані презентації
+generated/
+output/
+
+# Локальні дані застосунку
+data/
+storage/
+
+# ==============================
+# Qt / PySide
+# ==============================
+
+# Qt Designer generated files
+*.ui.autosave
+
+# Qt Creator
+*.user
+*.user.*
+
+# ==============================
+# Local development
+# ==============================
+
+.local/
