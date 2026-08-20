@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QWidget, QVBoxLayout
 
 from ui.widgets.content_widget import ContentWidget
 from ui.widgets.navigation_bar import NavigationBar
-
+from ui.workers.worker_manager import WorkerManager
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -10,8 +10,12 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("AI Presentation Generator")
         self.resize(1200, 800)
+
+        self.worker_manager = WorkerManager(self)
+
         self._create_ui()
         self._connect_signals()
+
 
     def _create_ui(self):
         central_widget = QWidget()
@@ -22,7 +26,7 @@ class MainWindow(QMainWindow):
         main_layout.setSpacing(0)
 
         self.navigation_bar = NavigationBar()
-        self.content = ContentWidget()
+        self.content = ContentWidget(self.worker_manager)
 
         main_layout.addWidget(self.navigation_bar)
         main_layout.addWidget(self.content, 1)

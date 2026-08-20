@@ -1,3 +1,4 @@
+from PySide6.QtCore import QThread
 from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
@@ -11,12 +12,30 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ui.workers.presentation_worker import PresentationWorker
+from PySide6.QtCore import QPropertyAnimation, QEasingCurve
+
 
 class CreatePresentationPage(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, worker_manager, parent=None):
         super().__init__(parent)
 
+        self.worker_manager = worker_manager
+
         self._create_ui()
+
+        self.progress_animation = QPropertyAnimation(
+            self.progress_bar,
+            b"value"
+        )
+
+        self.progress_animation.setDuration(700)
+        self.progress_animation.setEasingCurve(
+            QEasingCurve.Type.InOutQuad
+        )
+        self.generate_button.clicked.connect(
+            self._generate_presentation
+        )
 
     def _create_ui(self):
         main_layout = QVBoxLayout(self)
@@ -224,3 +243,64 @@ class CreatePresentationPage(QWidget):
         main_layout.addWidget(
             self.status_frame
         )
+
+    def _generate_presentation(self):
+        data = {
+            "grade": self.grade_combo.currentText(),
+            "subject": self.subject_combo.currentText(),
+            "lesson_type": self.lesson_type_combo.currentText(),
+            "topic": self.topic_edit.text(),
+            "additional_info": (
+                self.additional_info_edit.toPlainText()
+            ),
+        }
+
+        self.progress_bar.setValue(0)
+
+        worker = PresentationWorker(data)
+
+        worker.progress.connect(
+            self._update_progress
+        )
+
+        worker.status.connect(
+            self.status_label.setText
+        )
+
+        worker.finished.connect(
+            self._generation_finished
+        )
+
+        worker.error.connect(
+            self._generation_error
+        )
+
+        self.generate_button.setEnabled(False)
+
+        self.worker_manager.run(worker)
+
+    def _generation_finished(self):
+        self.status_label.setText(
+            "Презентацію створено"
+        )
+
+        self.generate_button.setEnabled(True)
+
+    def _generation_error(self, message):
+        self.status_label.setText(
+            f"Помилка: {message}"
+        )
+
+        self.progress_bar.setRange(0, 100)
+        self.progress_bar.setValue(0)
+
+    def _update_progress(self, value):
+        self.progress_animation.stop()
+
+        self.progress_animation.setStartValue(
+            self.progress_bar.value()
+        )
+
+        self.progress_animation.setEndValue(value)
+
+        self.progress_animation.start()

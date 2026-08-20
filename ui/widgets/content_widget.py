@@ -6,12 +6,15 @@ from PySide6.QtWidgets import (
 )
 
 from ui.pages.create_presentation_page import CreatePresentationPage
+from ui.pages.settings_page import SettingsPage
 
 
 class ContentWidget(QStackedWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, worker_manager, parent=None):
         super().__init__(parent)
+
+        self.worker_manager = worker_manager
 
         self.pages = {}
 
@@ -25,17 +28,14 @@ class ContentWidget(QStackedWidget):
 
         self._add_page(
             "create",
-            CreatePresentationPage(),
+            CreatePresentationPage(
+                self.worker_manager
+            )
         )
 
         self._add_page(
             "presentations",
             self._create_test_page("Презентації"),
-        )
-
-        self._add_page(
-            "ai",
-            self._create_test_page("Налаштування AI"),
         )
 
         self._add_page(
@@ -45,7 +45,7 @@ class ContentWidget(QStackedWidget):
 
         self._add_page(
             "settings",
-            self._create_test_page("Налаштування"),
+            SettingsPage(),
         )
 
     def _add_page(self, name, page):
