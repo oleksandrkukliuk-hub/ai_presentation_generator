@@ -1,16 +1,26 @@
 {
     "app_theme": "dark",
-    "language": "english",
+    "language": "en",
     "AI": {
         "ai_content_generator": {
-            "provider": "Google Gemini",
-            "model": "gemini 2.5 flash",
-            "api_key": ""
+            "provider": "OpenAI",
+            "model": "GPT-5",
+            "api_key": "432542352543544325"
         },
         "ai_slide_renderer": {
             "provider": "Google Gemini",
-            "model": "gemini 2.5 flash",
-            "api_key": ""
+            "model": "Gemini 2.5 Pro",
+            "api_key": "456"
         }
+    },
+    "AI_MODELS": {
+        "Google Gemini": [
+            "Gemini 2.5 Pro",
+            "Gemini 2.5 Flash"
+        ],
+        "OpenAI": [
+            "GPT-5",
+            "GPT-5 Mini"
+        ]
     }
 }

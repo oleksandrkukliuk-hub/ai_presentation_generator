@@ -9,8 +9,15 @@ from PySide6.QtWidgets import (
     QWidget, QHBoxLayout,
 )
 
+from config.settings import settings
+
+AI_MODELS = dict(settings.AI_MODELS)
+
+AI_PROVIDERS = list(AI_MODELS.keys())
+
 
 class SettingsPage(QWidget):
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -146,12 +153,15 @@ class SettingsPage(QWidget):
             QLabel("Провайдер")
         )
 
+        text_ai_provider = settings.AI.ai_content_generator.provider
+
         self.text_ai_provider_combo = QComboBox()
-        self.text_ai_provider_combo.addItems([
-            "Google Gemini",
-            "OpenAI",
-            "Anthropic Claude",
-        ])
+        self.text_ai_provider_combo.addItems(AI_PROVIDERS)
+        self.text_ai_provider_combo.setCurrentText(text_ai_provider)
+
+        self.text_ai_provider_combo.currentTextChanged.connect(
+            self._text_ai_update_models
+        )
 
         text_ai_layout.addWidget(
             self.text_ai_provider_combo
@@ -162,10 +172,8 @@ class SettingsPage(QWidget):
         )
 
         self.text_ai_model_combo = QComboBox()
-        self.text_ai_model_combo.addItems([
-            "Gemini 2.5 Pro",
-            "Gemini 2.5 Flash",
-        ])
+        self.text_ai_model_combo.addItems(AI_MODELS[text_ai_provider])
+        self.text_ai_model_combo.setCurrentText(settings.AI.ai_content_generator.model)
 
         text_ai_layout.addWidget(
             self.text_ai_model_combo
@@ -179,6 +187,8 @@ class SettingsPage(QWidget):
         self.text_ai_api_key_edit.setPlaceholderText(
             "Введіть API ключ..."
         )
+        self.text_ai_api_key_edit.setText(settings.AI.ai_content_generator.api_key)
+        self.text_ai_api_key_edit.textChanged.connect(self._text_api_key_changed)
 
         self.text_ai_api_key_edit.setEchoMode(
             QLineEdit.EchoMode.Password
@@ -210,11 +220,10 @@ class SettingsPage(QWidget):
         )
 
         self.json_ai_provider_combo = QComboBox()
-        self.json_ai_provider_combo.addItems([
-            "Google Gemini",
-            "OpenAI",
-            "Anthropic Claude",
-        ])
+        self.json_ai_provider_combo.addItems(AI_PROVIDERS)
+        self.json_ai_provider_combo.currentTextChanged.connect(
+            self._json_ai_update_models
+        )
 
         json_ai_layout.addWidget(
             self.json_ai_provider_combo
@@ -229,6 +238,7 @@ class SettingsPage(QWidget):
             "Gemini 2.5 Pro",
             "Gemini 2.5 Flash",
         ])
+        self.json_ai_model_combo.setCurrentText(settings.AI.ai_slide_renderer.model)
 
         json_ai_layout.addWidget(
             self.json_ai_model_combo
@@ -272,3 +282,24 @@ class SettingsPage(QWidget):
         scroll_layout.addWidget(
             ai_frame
         )
+
+    def _text_api_key_changed(self, text):
+        settings.AI.ai_content_generator.api_key = text
+
+    @staticmethod
+    def _update_models(provider, instance):
+        instance.clear()
+        instance.addItems(
+            AI_MODELS.get(provider, [])
+        )
+
+    def _text_ai_update_models(self, provider):
+        self._update_models(provider, self.text_ai_model_combo)
+        settings.AI.ai_content_generator.provider = provider
+        settings.AI.ai_content_generator.model = self.text_ai_model_combo.currentText()
+
+    def _json_ai_update_models(self, provider):
+        self._update_models(provider, self.json_ai_model_combo)
+        settings.AI.ai_slide_renderer.provider = provider
+        settings.AI.ai_slide_renderer.model = self.json_ai_model_combo.currentText()
+
