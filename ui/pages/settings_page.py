@@ -174,6 +174,9 @@ class SettingsPage(QWidget):
         self.text_ai_model_combo = QComboBox()
         self.text_ai_model_combo.addItems(AI_MODELS[text_ai_provider])
         self.text_ai_model_combo.setCurrentText(settings.AI.ai_content_generator.model)
+        self.text_ai_model_combo.currentTextChanged.connect(
+            self._text_ai_set_model
+        )
 
         text_ai_layout.addWidget(
             self.text_ai_model_combo
@@ -183,11 +186,13 @@ class SettingsPage(QWidget):
             QLabel("API ключ")
         )
 
+        text_ai_api_key = settings.AI.ai_content_generator.api_key
+
         self.text_ai_api_key_edit = QLineEdit()
         self.text_ai_api_key_edit.setPlaceholderText(
             "Введіть API ключ..."
         )
-        self.text_ai_api_key_edit.setText(settings.AI.ai_content_generator.api_key)
+        self.text_ai_api_key_edit.setText(text_ai_api_key)
         self.text_ai_api_key_edit.textChanged.connect(self._text_api_key_changed)
 
         self.text_ai_api_key_edit.setEchoMode(
@@ -219,8 +224,12 @@ class SettingsPage(QWidget):
             QLabel("Провайдер")
         )
 
+        json_ai_provider = settings.AI.ai_slide_renderer.provider
+
         self.json_ai_provider_combo = QComboBox()
         self.json_ai_provider_combo.addItems(AI_PROVIDERS)
+        self.json_ai_provider_combo.setCurrentText(json_ai_provider)
+
         self.json_ai_provider_combo.currentTextChanged.connect(
             self._json_ai_update_models
         )
@@ -234,11 +243,11 @@ class SettingsPage(QWidget):
         )
 
         self.json_ai_model_combo = QComboBox()
-        self.json_ai_model_combo.addItems([
-            "Gemini 2.5 Pro",
-            "Gemini 2.5 Flash",
-        ])
+        self.json_ai_model_combo.addItems(AI_MODELS[json_ai_provider])
         self.json_ai_model_combo.setCurrentText(settings.AI.ai_slide_renderer.model)
+        self.json_ai_model_combo.currentTextChanged.connect(
+            self._json_ai_set_model
+        )
 
         json_ai_layout.addWidget(
             self.json_ai_model_combo
@@ -248,10 +257,14 @@ class SettingsPage(QWidget):
             QLabel("API ключ")
         )
 
+        json_ai_api_key = settings.AI.ai_slide_renderer.api_key
+
         self.json_ai_api_key_edit = QLineEdit()
         self.json_ai_api_key_edit.setPlaceholderText(
             "Введіть API ключ..."
         )
+        self.json_ai_api_key_edit.setText(json_ai_api_key)
+        self.json_ai_api_key_edit.textChanged.connect(self._json_api_key_changed)
 
         self.json_ai_api_key_edit.setEchoMode(
             QLineEdit.EchoMode.Password
@@ -286,6 +299,9 @@ class SettingsPage(QWidget):
     def _text_api_key_changed(self, text):
         settings.AI.ai_content_generator.api_key = text
 
+    def _json_api_key_changed(self, text):
+        settings.AI.ai_slide_renderer.api_key = text
+
     @staticmethod
     def _update_models(provider, instance):
         instance.clear()
@@ -302,4 +318,12 @@ class SettingsPage(QWidget):
         self._update_models(provider, self.json_ai_model_combo)
         settings.AI.ai_slide_renderer.provider = provider
         settings.AI.ai_slide_renderer.model = self.json_ai_model_combo.currentText()
+
+    @staticmethod
+    def _text_ai_set_model(model):
+        settings.AI.ai_content_generator.model = model
+
+    @staticmethod
+    def _json_ai_set_model(model):
+        settings.AI.ai_slide_renderer.model = model
 

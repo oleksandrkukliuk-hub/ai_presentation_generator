@@ -3,14 +3,14 @@
     "language": "en",
     "AI": {
         "ai_content_generator": {
-            "provider": "OpenAI",
-            "model": "GPT-5",
+            "provider": "Google Gemini",
+            "model": "Gemini 2.5 Flash",
             "api_key": "432542352543544325"
         },
         "ai_slide_renderer": {
-            "provider": "Google Gemini",
-            "model": "Gemini 2.5 Pro",
-            "api_key": "456"
+            "provider": "OpenAI",
+            "model": "GPT-5 Mini",
+            "api_key": "456345"
         }
     },
     "AI_MODELS": {

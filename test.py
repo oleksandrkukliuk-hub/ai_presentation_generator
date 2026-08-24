@@ -1,3 +1,3 @@
 from config.settings import settings
 
-print(dict(settings.AI))
+settings.AI_MODELS = "test"

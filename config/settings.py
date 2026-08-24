@@ -77,6 +77,7 @@ class Settings:
         "AI",
         "AI.ai_content_generator",
         "AI.ai_slide_renderer",
+        "AI_MODELS",
     }
 
     def __new__(cls):
