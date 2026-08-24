@@ -1,0 +1,16 @@
+{
+    "app_theme": "dark",
+    "language": "english",
+    "AI": {
+        "ai_content_generator": {
+            "provider": "Google Gemini",
+            "model": "gemini 2.5 flash",
+            "api_key": ""
+        },
+        "ai_slide_renderer": {
+            "provider": "Google Gemini",
+            "model": "gemini 2.5 flash",
+            "api_key": ""
+        }
+    }
+}
