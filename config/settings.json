@@ -8,8 +8,8 @@
             "api_key": "432542352543544325"
         },
         "ai_slide_renderer": {
-            "provider": "OpenAI",
-            "model": "GPT-5 Mini",
+            "provider": "Google Gemini",
+            "model": "Gemini 2.5 Flash",
             "api_key": "456345"
         }
     },
