@@ -126,17 +126,17 @@ class CreatePresentationPage(QWidget):
 
         # Додаткова інформація
         input_layout.addWidget(
-            QLabel("Додаткова інформація")
+            QLabel("Додаткові інструкції для ШІ")
         )
 
-        self.additional_info_edit = QTextEdit()
-        self.additional_info_edit.setPlaceholderText(
+        self.additional_instructions_edit = QTextEdit()
+        self.additional_instructions_edit.setPlaceholderText(
             "Наприклад: додати практичні завдання, "
             "експерименти, більше ілюстрацій..."
         )
 
         input_layout.addWidget(
-            self.additional_info_edit
+            self.additional_instructions_edit
         )
 
         # input_layout.addStretch()
@@ -250,8 +250,8 @@ class CreatePresentationPage(QWidget):
             "academic_subject": self.subject_combo.currentText(),
             "lesson_type": self.lesson_type_combo.currentText(),
             "lesson_topic": self.topic_edit.text(),
-            "additional_info": (
-                self.additional_info_edit.toPlainText()
+            "additional_instructions": (
+                self.additional_instructions_edit.toPlainText()
             ),
         }
 
