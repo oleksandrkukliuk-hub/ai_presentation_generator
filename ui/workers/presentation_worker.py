@@ -10,6 +10,8 @@ class PresentationWorker(QObject):
     progress = Signal(int)
     status = Signal(str)
 
+    result = Signal(str)
+
     def __init__(self, data):
         super().__init__()
 
@@ -21,30 +23,12 @@ class PresentationWorker(QObject):
             self.status.emit("Підготовка...")
             self.progress.emit(10)
 
-            time.sleep(1)
-
-            self.status.emit("Генеруємо текст...")
-            self.progress.emit(30)
-
-            time.sleep(1)
-
-            self.status.emit("Створюємо структуру...")
-            self.progress.emit(60)
-
-            time.sleep(1)
-
-            self.status.emit("Створюємо слайди...")
-            self.progress.emit(90)
-
-            time.sleep(1)
-
-
-
             self.progress.emit(100)
             time.sleep(0.7)
 
-            print(self.data)
+
             self.status.emit("Готово")
+            self.result.emit(str(self.data))
 
             self.finished.emit()
 

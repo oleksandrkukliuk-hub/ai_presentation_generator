@@ -246,10 +246,10 @@ class CreatePresentationPage(QWidget):
 
     def _generate_presentation(self):
         data = {
-            "grade": self.grade_combo.currentText(),
-            "subject": self.subject_combo.currentText(),
+            "class": self.grade_combo.currentText(),
+            "academic_subject": self.subject_combo.currentText(),
             "lesson_type": self.lesson_type_combo.currentText(),
-            "topic": self.topic_edit.text(),
+            "lesson_topic": self.topic_edit.text(),
             "additional_info": (
                 self.additional_info_edit.toPlainText()
             ),
@@ -265,6 +265,10 @@ class CreatePresentationPage(QWidget):
 
         worker.status.connect(
             self.status_label.setText
+        )
+
+        worker.result.connect(
+            self.preview_label.setText
         )
 
         worker.finished.connect(
